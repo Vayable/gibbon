@@ -170,9 +170,13 @@ module Gibbon
     end
 
     def rest_client
-      client = Faraday.new(self.api_url, proxy: self.proxy, ssl: { version: "TLSv1_2" }) do |faraday|
+      # , ssl: { version: "TLSv1_2" }
+      client = Faraday.new(self.api_url, proxy: self.proxy) do |faraday|
         faraday.response :raise_error
-        faraday.adapter adapter
+        faraday.adapter adapter do |session|
+          # Hard coded to work with Patron adapter
+          session.ssl_version = "TLSv1_2"
+        end
         if @request_builder.debug
           faraday.response :logger, @request_builder.logger, bodies: true
         end
