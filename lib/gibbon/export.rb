@@ -6,7 +6,10 @@ module Gibbon
 
     attr_accessor :api_key, :timeout
 
-    def initialize(api_key: nil, timeout: nil)
+    def initialize(options = {})
+      api_key = options.fetch(:api_key, nil)
+      timeout = options.fetch(:timeout, nil)
+
       @api_key = api_key || self.class.api_key
       @timeout = timeout || self.class.timeout || 600
     end
@@ -66,8 +69,8 @@ module Gibbon
     rescue MultiJson::ParseError
       [[], last]
     end
-     
-     
+
+
     def parse_line(line)
       parsed_response = MultiJson.load(line)
     rescue MultiJson::ParseError

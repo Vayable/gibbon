@@ -2,7 +2,8 @@ module Gibbon
   class APIRequest
     include Helpers
 
-    def initialize(builder: nil)
+    def initialize(options = {})
+      builder = options.fetch(:builder, nil)
       @request_builder = builder
     end
 
@@ -152,7 +153,12 @@ module Gibbon
       raise error_to_raise
     end
 
-    def configure_request(request: nil, params: nil, headers: nil, body: nil)
+    def configure_request(options = {})
+      request = options.fetch(:request, nil)
+      params = options.fetch(:params, nil)
+      headers = options.fetch(:headers, nil)
+      body = options.fetch(:body, nil)
+
       if request
         request.params.merge!(params) if params
         request.headers['Content-Type'] = 'application/json'
