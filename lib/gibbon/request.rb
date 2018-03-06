@@ -5,7 +5,17 @@ module Gibbon
     DEFAULT_TIMEOUT = 60
     DEFAULT_OPEN_TIMEOUT = 60
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, symbolize_keys: false, debug: false, logger: nil)
+    def initialize(options = {})
+      api_key = options.fetch(:api_key, nil)
+      api_endpoint = options.fetch(:api_endpoint, nil)
+      timeout = options.fetch(:timeout, nil)
+      open_timeout = options.fetch(:open_timeout, nil)
+      proxy = options.fetch(:proxy, nil)
+      faraday_adapter = options.fetch(:faraday_adapter, nil)
+      symbolize_keys = options.fetch(:symbolize_keys, false)
+      debug = options.fetch(:debug, false)
+      logger = options.fetch(:logger, nil)
+
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
@@ -43,31 +53,44 @@ module Gibbon
       @path_parts.join('/')
     end
 
-    def create(params: nil, headers: nil, body: nil)
+    def create(options = {})
+      body = options.fetch(:body, {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
       APIRequest.new(builder: self).post(params: params, headers: headers, body: body)
     ensure
       reset
     end
 
-    def update(params: nil, headers: nil, body: nil)
+    def update(options = {})
+      body = options.fetch(:body, {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
       APIRequest.new(builder: self).patch(params: params, headers: headers, body: body)
     ensure
       reset
     end
 
-    def upsert(params: nil, headers: nil, body: nil)
+    def upsert(options = {})
+      body = options.fetch(:body, {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
       APIRequest.new(builder: self).put(params: params, headers: headers, body: body)
     ensure
       reset
     end
 
-    def retrieve(params: nil, headers: nil)
+    def retrieve(options = {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
       APIRequest.new(builder: self).get(params: params, headers: headers)
     ensure
       reset
     end
 
-    def delete(params: nil, headers: nil)
+    def delete(options = {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
       APIRequest.new(builder: self).delete(params: params, headers: headers)
     ensure
       reset

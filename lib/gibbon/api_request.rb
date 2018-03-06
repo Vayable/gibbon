@@ -6,7 +6,11 @@ module Gibbon
       @request_builder = builder
     end
 
-    def post(params: nil, headers: nil, body: nil)
+    def post(options = {})
+      body = options.fetch(:body, {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
+
       validate_api_key
 
       begin
@@ -19,7 +23,11 @@ module Gibbon
       end
     end
 
-    def patch(params: nil, headers: nil, body: nil)
+    def patch(options = {})
+      body = options.fetch(:body, {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
+
       validate_api_key
 
       begin
@@ -32,7 +40,11 @@ module Gibbon
       end
     end
 
-    def put(params: nil, headers: nil, body: nil)
+    def put(options = {})
+      body = options.fetch(:body, {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
+
       validate_api_key
 
       begin
@@ -45,7 +57,10 @@ module Gibbon
       end
     end
 
-    def get(params: nil, headers: nil)
+    def get(options = {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
+
       validate_api_key
 
       begin
@@ -58,7 +73,10 @@ module Gibbon
       end
     end
 
-    def delete(params: nil, headers: nil)
+    def delete(options = {})
+      params = options.fetch(:params, {})
+      headers = options.fetch(:headers, {})
+
       validate_api_key
 
       begin
